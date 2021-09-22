@@ -22,29 +22,30 @@ jobs:
     runs-on: ubuntu-latest
     needs: build_push_image # Will wait for the execution of the previous job
     
-    - uses: actions/checkout@v2
-    
-    - name: Helm tool installer
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Helm tool installer
         uses: Azure/setup-helm@v1
         with:
           # Version of helm
           version: # default is latest
-          
-    - name: Azure Kubernetes set context
-        uses: Azure/aks-set-context@v1
-        with:
-          creds: ${{ secrets.AZURE_CREDENTIALS }} 
-          resource-group: mslearn-gh-pipelines-11570
-          cluster-name: contoso-video
-    - name: Run Helm Deploy
-      run: |
-        helm upgrade \
-          --install \
-          --create-namespace \
-          --atomic \
-          --wait \
-          --namespace staging \
-          contoso-website \
-          ./kubernetes/contoso-website \
-          --set image.repository=${{ secrets.ACR_NAME }} \
-          --set dns.name=${{ secrets.DNS_NAME }}
+
+      - name: Azure Kubernetes set context
+          uses: Azure/aks-set-context@v1
+          with:
+            creds: ${{ secrets.AZURE_CREDENTIALS }} 
+            resource-group: mslearn-gh-pipelines-11570
+            cluster-name: contoso-video
+      - name: Run Helm Deploy
+        run: |
+          helm upgrade \
+            --install \
+            --create-namespace \
+            --atomic \
+            --wait \
+            --namespace staging \
+            contoso-website \
+            ./kubernetes/contoso-website \
+            --set image.repository=${{ secrets.ACR_NAME }} \
+            --set dns.name=${{ secrets.DNS_NAME }}
