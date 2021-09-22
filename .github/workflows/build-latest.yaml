@@ -29,14 +29,14 @@ jobs:
         uses: Azure/setup-helm@v1
         with:
           # Version of helm
-          version: # default is latest
+          version: v3.3.1
 
       - name: Azure Kubernetes set context
-          uses: Azure/aks-set-context@v1
-          with:
-            creds: ${{ secrets.AZURE_CREDENTIALS }} 
-            resource-group: mslearn-gh-pipelines-11570
-            cluster-name: contoso-video
+        uses: Azure/aks-set-context@v1
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }} 
+          resource-group: mslearn-gh-pipelines-11570
+          cluster-name: contoso-video
       - name: Run Helm Deploy
         run: |
           helm upgrade \
